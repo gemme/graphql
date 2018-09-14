@@ -10,7 +10,8 @@ const schema = buildSchema(`
 		watched: Boolean
 	}
 	type Query  {
-		video: Video
+		video: Video,
+		videos: [Video]
 	}
 	type Schema {
 		query: Query
@@ -23,12 +24,13 @@ const resolvers = {
 		title: () => 'bar',
 		duration: () => 180,
 		watched: () => true
-	})
+	}),
+	videos: () => videos
 };
 
 const query = `
 	query myFirstQuery {
-		video {
+		videos {
 			id,
 			title,
 			duration,
@@ -36,6 +38,22 @@ const query = `
 		}
 	}
 `;
+
+const videoA =  {
+	id: '123',
+	title: 'videoA',
+	duration: 321,
+	watched: true
+};
+
+const videoB =  {
+	id: '456',
+	title: 'videoB',
+	duration: 111,
+	watched: false
+};
+
+const videos =  [videoA, videoB];
 
 graphql(schema, query, resolvers)
 	.then(result => console.log(result))
